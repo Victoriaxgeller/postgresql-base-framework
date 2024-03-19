@@ -2,10 +2,8 @@ package data;
 
 import lombok.extern.java.Log;
 import org.apache.commons.lang3.RandomStringUtils;
-import org.junit.jupiter.api.Test;
 import postgres.entity.EmployeeEntity;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;

@@ -10,10 +10,7 @@ import java.sql.Statement;
 @Log
 public class DB_ConnectivityManager {
     protected static Connection connection;
-    protected static Statement stmt = null;
-
-
-    //TODO singleton
+    protected static Statement stmt;
 
     protected static Connection connect() {
         if (connection != null) {
@@ -39,7 +36,7 @@ public class DB_ConnectivityManager {
 
     }
 
-    public static void closeConnection() throws SQLException {
+    public static void closeConnection() {
         try {
             if (connection != null) {
                 connection.close();

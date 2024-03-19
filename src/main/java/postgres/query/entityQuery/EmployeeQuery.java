@@ -46,8 +46,7 @@ public class EmployeeQuery extends Query {
     }
 
     public void deleteAllEmployees() {
-        ResultSet set = select().selectData("SELECT * FROM COMPANY;");
-        List<EmployeeEntity> employees = parseResultSet(set);
+        List<EmployeeEntity> employees = selectListOfAllEmployees();
         employees.stream().map(EmployeeEntity::getId).forEach(this::deleteEmployee);
     }
 

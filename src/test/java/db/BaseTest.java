@@ -1,10 +1,8 @@
 package db;
 
 import data.TestDataGenerator;
-import org.apache.commons.lang3.builder.EqualsExclude;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import postgres.query.entityQuery.EmployeeQuery;
 
 import java.sql.SQLException;
