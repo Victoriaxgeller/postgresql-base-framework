@@ -1,15 +1,24 @@
 package postgres.conn;
 
+import lombok.extern.java.Log;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.sql.Statement;
 
+@Log
 public class DB_ConnectivityManager {
-    private Connection connection;
+    protected static Connection connection;
+    protected static Statement stmt = null;
+
 
     //TODO singleton
 
-    public Connection connect() {
+    protected static Connection connect() {
+        if (connection != null) {
+            return connection;
+        }
         try {
             Class.forName("org.postgresql.Driver");
             connection = DriverManager
@@ -24,9 +33,22 @@ public class DB_ConnectivityManager {
         return connection;
     }
 
-    public void closeConnection() throws SQLException {
-        if (connection != null) {
-            connection.close();
+    public void setupDB() throws SQLException {
+        connect();
+        connection.setAutoCommit(false);
+
+    }
+
+    public static void closeConnection() throws SQLException {
+        try {
+            if (connection != null) {
+                connection.close();
+                System.out.println("Closed database successfully");
+
+            }
+        } catch (SQLException e) {
+            System.out.println("Error: " + e.getMessage());
         }
+
     }
 }

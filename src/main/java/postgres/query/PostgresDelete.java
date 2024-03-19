@@ -4,42 +4,21 @@ import postgres.conn.DB_ConnectivityManager;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 
-public class PostgresDelete {
-    public static void main(String args[]) {
-        Connection c = new DB_ConnectivityManager().connect();
-        Statement stmt = null;
+public class PostgresDelete extends DB_ConnectivityManager {
+
+    public void deleteData(String SQL) {
         try {
-            c.setAutoCommit(false);
-
-
-            stmt = c.createStatement();
-            String sql = "DELETE from COMPANY where ID = 2;";
-            stmt.executeUpdate(sql);
-            c.commit();
-
-            ResultSet rs = stmt.executeQuery( "SELECT * FROM COMPANY;" );
-            while ( rs.next() ) {
-                int id = rs.getInt("id");
-                String  name = rs.getString("name");
-                int age  = rs.getInt("age");
-                String  address = rs.getString("address");
-                float salary = rs.getFloat("salary");
-                System.out.println( "ID = " + id );
-                System.out.println( "NAME = " + name );
-                System.out.println( "AGE = " + age );
-                System.out.println( "ADDRESS = " + address );
-                System.out.println( "SALARY = " + salary );
-                System.out.println();
-            }
-            rs.close();
+            setupDB();
+            stmt = connection.createStatement();
+            stmt.executeUpdate(SQL);
             stmt.close();
-            c.close();
-        } catch ( Exception e ) {
-            System.err.println( e.getClass().getName()+": "+ e.getMessage() );
-            System.exit(0);
+            connection.commit();
+        } catch (SQLException e) {
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
         }
-        System.out.println("Operation done successfully");
+        System.out.println("Records deleted successfully");
     }
 }
