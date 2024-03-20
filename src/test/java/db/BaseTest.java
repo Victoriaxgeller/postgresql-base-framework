@@ -7,7 +7,7 @@ import postgres.query.entityQuery.EmployeeQuery;
 
 import java.sql.SQLException;
 
-import static postgres.conn.DB_ConnectivityManager.closeConnection;
+import static postgres.conn.ConnectionFactory.closeConnection;
 
 public abstract class BaseTest {
     protected TestDataGenerator testData = new TestDataGenerator();

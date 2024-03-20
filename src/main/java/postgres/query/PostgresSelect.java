@@ -1,15 +1,15 @@
 package postgres.query;
 
-import postgres.conn.DB_ConnectivityManager;
+import postgres.conn.ConnectionFactory;
 
 import java.sql.SQLException;
 import java.sql.ResultSet;
 
-public class PostgresSelect extends DB_ConnectivityManager {
+public class PostgresSelect extends ConnectionFactory {
     public ResultSet selectData(String SQL) {
         try {
             ResultSet rs;
-            setupDB();
+            connect();
             stmt = connection.createStatement();
             rs = stmt.executeQuery(SQL);
             return rs;
@@ -17,7 +17,7 @@ public class PostgresSelect extends DB_ConnectivityManager {
         } catch (SQLException e) {
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
         }
-        System.out.println("Records created successfully");
+        logger.info("Records created successfully");
         return null;
     }
 }

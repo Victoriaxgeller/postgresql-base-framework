@@ -1,24 +1,19 @@
 package postgres.query;
 
-import postgres.conn.DB_ConnectivityManager;
+import postgres.conn.ConnectionFactory;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 
-public class PostgresDelete extends DB_ConnectivityManager {
+public class PostgresDelete extends ConnectionFactory {
 
     public void deleteData(String SQL) {
         try {
-            setupDB();
+            connect();
             stmt = connection.createStatement();
             stmt.executeUpdate(SQL);
-            stmt.close();
-            connection.commit();
         } catch (SQLException e) {
-            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            logger.error(e.getClass().getName() + ": " + e.getMessage());
         }
-        System.out.println("Records deleted successfully");
+        logger.info("Records deleted successfully");
     }
 }

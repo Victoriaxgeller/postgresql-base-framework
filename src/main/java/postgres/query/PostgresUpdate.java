@@ -1,13 +1,13 @@
 package postgres.query;
 
-import postgres.conn.DB_ConnectivityManager;
+import postgres.conn.ConnectionFactory;
 
 import java.sql.SQLException;
 
-public class PostgresUpdate extends DB_ConnectivityManager {
+public class PostgresUpdate extends ConnectionFactory {
     public void updateData(String SQL) {
             try {
-                setupDB();
+                connect();
                 stmt = connection.createStatement();
                 stmt.executeUpdate(SQL);
                 stmt.close();
@@ -15,6 +15,6 @@ public class PostgresUpdate extends DB_ConnectivityManager {
             } catch (SQLException e) {
                 System.err.println(e.getClass().getName() + ": " + e.getMessage());
             }
-            System.out.println("Records updated successfully");
+            logger.info("Records updated successfully");
         }
 }

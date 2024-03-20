@@ -1,50 +1,38 @@
 package data;
 
-import lombok.extern.java.Log;
 import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import postgres.entity.EmployeeEntity;
+import postgres.query.entityQuery.Query;
+import com.github.javafaker.Faker;
+
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
-@Log
 public class TestDataGenerator {
-
+    private static final Logger logger = LogManager.getLogger(Query.class);
 
     public EmployeeEntity generateTestEmployee() {
+        Faker faker = new Faker();
         EmployeeEntity employee = new EmployeeEntity();
         employee.setId(getRandomId());
-        employee.setName(generateRandomName());
+        employee.setName(faker.name().firstName());
         employee.setAge(getRandomAge());
-        employee.setAddress(getRandomAddress());
+        employee.setAddress(faker.address().city());
         employee.setSalary(generateSalary());
-        log.info("GENERATED TEST ENTITY: " + employee);
+        logger.info("Generated Employee data: " + employee);
         return employee;
     }
-
-    private int getRandomNameLength() {
-        int max = 10, min = 5;
-        return new Random().nextInt(max - min + 1) + min;
-    }
-
     private int getRandomId() {
-        return new Random().nextInt(1000);
+        return new Random().nextInt(50);
     }
 
     private int getRandomAge() {
         int max = 60, min = 18;
         return new Random().nextInt(max - min + 1) + min;
-    }
-
-    private String generateRandomName() {
-        String name = RandomStringUtils.random(getRandomNameLength(), true, false);
-        return name.substring(0, 1).toUpperCase() + name.substring(1).toLowerCase();
-    }
-
-    private String getRandomAddress() {
-        List<String> list = Arrays.asList("Austin", "Boston", "Salem", "Oklahoma City", "Atlanta", "Columbia", "California", "Richmond", "Nashville", "Madison");
-        return list.get(new Random().nextInt(list.size()));
     }
 
     private int generateSalary() {

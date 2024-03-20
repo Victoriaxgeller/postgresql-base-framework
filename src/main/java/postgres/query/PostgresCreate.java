@@ -1,14 +1,14 @@
 package postgres.query;
 
-import postgres.conn.DB_ConnectivityManager;
+import postgres.conn.ConnectionFactory;
 
 import java.sql.Connection;
 import java.sql.Statement;
 
-public class PostgresCreate extends DB_ConnectivityManager {
+public class PostgresCreate extends ConnectionFactory {
 
     public void createTable() {
-        Connection c = new DB_ConnectivityManager().connect();
+        Connection c = new ConnectionFactory().connect();
         Statement stmt = null;
         try {
             stmt = c.createStatement();
@@ -25,6 +25,6 @@ public class PostgresCreate extends DB_ConnectivityManager {
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
             System.exit(0);
         }
-        System.out.println("Table created successfully");
+        logger.info("Table created successfully");
     }
 }

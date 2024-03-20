@@ -1,13 +1,14 @@
 package postgres.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 
 import java.util.Objects;
 
-@Setter @Getter @AllArgsConstructor @NoArgsConstructor
+@Setter
+@Getter
+@AllArgsConstructor
+@NoArgsConstructor
 public class EmployeeEntity {
 
     private int id;
@@ -18,19 +19,13 @@ public class EmployeeEntity {
 
     @Override
     public String toString() {
-        return "EmployeeEntity{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", age=" + age +
-                ", address='" + address + '\'' +
-                ", salary=" + salary +
-                '}';
+        return ReflectionToStringBuilder.toString(this);
     }
 
     @Override
     public boolean equals(Object o) {
+        if (!(o instanceof EmployeeEntity) || this.hashCode() != o.hashCode()) return false;
         if (this == o) return true;
-        if (!(o instanceof EmployeeEntity)) return false;
         EmployeeEntity employee = (EmployeeEntity) o;
         return id == employee.id && age == employee.age && Float.compare(salary, employee.salary) == 0 && Objects.equals(name, employee.name) && Objects.equals(address, employee.address);
     }

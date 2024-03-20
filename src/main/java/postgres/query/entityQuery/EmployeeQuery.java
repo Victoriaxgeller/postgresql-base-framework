@@ -3,6 +3,7 @@ package postgres.query.entityQuery;
 import lombok.extern.java.Log;
 import postgres.entity.EmployeeEntity;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -10,15 +11,11 @@ import java.util.List;
 
 import static java.lang.String.format;
 
-@Log
 public class EmployeeQuery extends Query {
 
     public void insertNewEmployee(EmployeeEntity employee) {
-        String SQL = "INSERT INTO COMPANY (ID,NAME,AGE,ADDRESS,SALARY) "
-                + format("VALUES ( %s,'%s', %s, '%s', %s );", employee.getId(), employee.getName(), employee.getAge(),
-                employee.getAddress(), employee.getSalary());
-        insert().insertData(SQL);
-
+        String SQL = "INSERT INTO COMPANY (ID,NAME,AGE,ADDRESS,SALARY) VALUES (?,?,?,?,?)";
+        insert().insertData(SQL, employee);
     }
 
     public EmployeeEntity selectEmployee(int id) {
@@ -26,7 +23,7 @@ public class EmployeeQuery extends Query {
         EmployeeEntity employee;
         try {
             employee = parseResultSet(set).get(0);
-            System.out.println(employee);
+            logger.info(employee);
 
         } catch (IndexOutOfBoundsException e) {
             return null;
@@ -36,12 +33,12 @@ public class EmployeeQuery extends Query {
     }
 
     public List<EmployeeEntity> selectListOfAllEmployees() {
-        ResultSet set = select().selectData("SELECT * FROM COMPANY;");
+        ResultSet set = select().selectData("SELECT * FROM COMPANY");
         return parseResultSet(set);
     }
 
     public void deleteEmployee(int id) {
-        String SQL = format("DELETE from COMPANY where ID = %s;", id);
+        String SQL = format("DELETE from COMPANY where ID = %s", id);
         delete().deleteData(SQL);
     }
 
@@ -51,7 +48,7 @@ public class EmployeeQuery extends Query {
     }
 
     public void updateEmployee(EmployeeEntity employee) {
-        String SQL = format("UPDATE COMPANY set SALARY = %s, NAME = '%s',AGE = %s,ADDRESS = '%s' where ID=%s;",
+        String SQL = format("UPDATE COMPANY set SALARY = %s, NAME = '%s',AGE = %s,ADDRESS = '%s' where ID=%s",
                 employee.getSalary(), employee.getName(), employee.getAge(), employee.getAddress(), employee.getId());
         update().updateData(SQL);
     }
@@ -67,10 +64,10 @@ public class EmployeeQuery extends Query {
                 float salary = rs.getFloat("salary");
                 EmployeeEntity employee = new EmployeeEntity(id, name, age, address, salary);
                 employees.add(employee);
-                log.info("RESULT SET FROM DB: " + employee);
+                logger.info("Result Set from DB: " + employee);
             }
         } catch (SQLException e) {
-            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            logger.error(e.getClass().getName() + ": " + e.getMessage());
 
         }
         return employees;
