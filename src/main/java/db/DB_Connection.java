@@ -1,18 +1,16 @@
-package postgres.conn;
+package db;
 
-import org.apache.logging.log4j.Logger;
+import db.utils.PropertyLoader;
 import org.apache.logging.log4j.LogManager;
-import postgres.utils.PropertyLoader;
+import org.apache.logging.log4j.Logger;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 
-
-public class ConnectionFactory {
-    protected static final Logger logger = LogManager.getLogger(ConnectionFactory.class);
+public class DB_Connection {
+    protected static final Logger logger = LogManager.getLogger(DB_Connection.class);
     protected static Connection connection;
-    protected static Statement stmt;
-    protected PreparedStatement preparedStatement;
-
     protected static Connection connect() {
         if (connection != null) {
             return connection;

@@ -1,4 +1,4 @@
-package postgres.utils;
+package db.utils;
 
 import lombok.Getter;
 

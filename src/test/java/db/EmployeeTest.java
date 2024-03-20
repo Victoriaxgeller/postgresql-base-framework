@@ -1,39 +1,53 @@
 package db;
 
+import data.TestDataGenerator;
+import db.dao.Employee;
+import db.service.EmployeeService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import postgres.entity.EmployeeEntity;
 
-public class EmployeeTest extends BaseTest {
+public class EmployeeTest extends BaseTest{
+
 
     @Test
     public void newEmployeeIsAddedToDBWithCorrectData() {
-        EmployeeEntity expectedEmployee = testData.generateTestEmployee();
-        query.insertNewEmployee(expectedEmployee);
-        EmployeeEntity actualEmployee = query.selectEmployee(expectedEmployee.getId());
+        Employee expectedEmployee = generator.generateEmployee();
+
+        if (!service.insertEmployee(expectedEmployee)) {
+            Assertions.fail("Failed to insert new Employee");
+        }
+        Employee actualEmployee = service.getEmployeeById(expectedEmployee.getId());
         Assertions.assertEquals(actualEmployee, expectedEmployee);
     }
 
     @Test
     public void employeeHasBeenDeletedFromDB() {
-        EmployeeEntity expectedEmployee = testData.generateTestEmployee();
-        query.insertNewEmployee(expectedEmployee);
-        query.deleteEmployee(expectedEmployee.getId());
-        Assertions.assertNull(query.selectEmployee(expectedEmployee.getId()));
+        Employee expectedEmployee = generator.generateEmployee();
+        if (!service.insertEmployee(expectedEmployee)) {
+            Assertions.fail("Failed to insert new Employee");
+        }
+        if (!service.deleteEmployee(expectedEmployee.getId())) {
+            Assertions.fail("Failed to delete Employee");
+        }
+        Assertions.assertNull(service.getEmployeeById(expectedEmployee.getId()));
     }
 
     @Test
     public void employeeHasBeenUpdated() {
-        EmployeeEntity createdUser = testData.generateTestEmployee();
-        EmployeeEntity updatedUser = testData.generateTestEmployee();
-        updatedUser.setId(createdUser.getId());
+        Employee createdEmployee = generator.generateEmployee();
+        Employee updatedEmployee = generator.generateEmployee();
+        updatedEmployee.setId(createdEmployee.getId());
+        if (!service.insertEmployee(createdEmployee)) {
+            Assertions.fail("Failed to insert new Employee");
+        }
 
-        query.insertNewEmployee(createdUser);
-        query.updateEmployee(updatedUser);
-        EmployeeEntity actualEmployee = query.selectEmployee(createdUser.getId());
-        Assertions.assertEquals(actualEmployee, updatedUser);
+        if (!service.updateEmployee(updatedEmployee)) {
+            Assertions.fail("Failed to update Employee");
+        }
+        Employee actualEmployee = service.getEmployeeById(createdEmployee.getId());
+        Assertions.assertEquals(actualEmployee, updatedEmployee);
 
     }
-    //TODO create new user -> temporary raw query in DB -> replace with API service
 
+    //TODO replace raw query in DB with API service
 }

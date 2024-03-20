@@ -1,10 +1,9 @@
 package data;
 
+import db.dao.Employee;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import postgres.entity.EmployeeEntity;
-import postgres.query.entityQuery.Query;
 import com.github.javafaker.Faker;
 
 
@@ -13,11 +12,11 @@ import java.util.List;
 import java.util.Random;
 
 public class TestDataGenerator {
-    private static final Logger logger = LogManager.getLogger(Query.class);
+    private static final Logger logger = LogManager.getLogger(TestDataGenerator.class);
 
-    public EmployeeEntity generateTestEmployee() {
+    public Employee generateEmployee() {
         Faker faker = new Faker();
-        EmployeeEntity employee = new EmployeeEntity();
+        Employee employee = new Employee();
         employee.setId(getRandomId());
         employee.setName(faker.name().firstName());
         employee.setAge(getRandomAge());
@@ -26,6 +25,7 @@ public class TestDataGenerator {
         logger.info("Generated Employee data: " + employee);
         return employee;
     }
+
     private int getRandomId() {
         return new Random().nextInt(50);
     }

@@ -1,4 +1,4 @@
-package postgres.entity;
+package db.dao;
 
 import lombok.*;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
@@ -9,7 +9,7 @@ import java.util.Objects;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class EmployeeEntity {
+public class Employee {
 
     private int id;
     private String name;
@@ -24,9 +24,9 @@ public class EmployeeEntity {
 
     @Override
     public boolean equals(Object o) {
-        if (!(o instanceof EmployeeEntity) || this.hashCode() != o.hashCode()) return false;
+        if (!(o instanceof Employee) || this.hashCode() != o.hashCode()) return false;
         if (this == o) return true;
-        EmployeeEntity employee = (EmployeeEntity) o;
+        Employee employee = (Employee) o;
         return id == employee.id && age == employee.age && Float.compare(salary, employee.salary) == 0 && Objects.equals(name, employee.name) && Objects.equals(address, employee.address);
     }
 

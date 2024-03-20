@@ -1,27 +1,24 @@
 package db;
 
 import data.TestDataGenerator;
+import db.service.EmployeeService;
+import db.utils.HelperService;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
-import postgres.query.entityQuery.EmployeeQuery;
 
-import java.sql.SQLException;
-
-import static postgres.conn.ConnectionFactory.closeConnection;
+import static db.DB_Connection.closeConnection;
 
 public abstract class BaseTest {
-    protected TestDataGenerator testData = new TestDataGenerator();
-    protected static EmployeeQuery query;
-
+    TestDataGenerator generator = new TestDataGenerator();
+    EmployeeService service = new EmployeeService();
 
     @BeforeAll
-    public static void setup() {
-        query = new EmployeeQuery();
-        query.deleteAllEmployees();
+    public static void prepare() {
+        new HelperService().truncateTable();
     }
 
     @AfterAll
-    public static void close() throws SQLException {
+    public static void close() {
         closeConnection();
     }
 }
